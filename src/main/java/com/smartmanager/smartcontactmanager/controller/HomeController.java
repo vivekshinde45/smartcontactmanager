@@ -73,6 +73,7 @@ public class HomeController {
 
             session.setAttribute("message", new Message("Successfully registered !!", "alert-success"));
             model.addAttribute("user", new User());
+
             return "signup";
         } catch (Exception e) {
             e.printStackTrace();
