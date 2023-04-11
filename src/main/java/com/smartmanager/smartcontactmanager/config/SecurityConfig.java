@@ -48,7 +48,13 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/user/**").hasRole("USER")
                 .requestMatchers("/**").permitAll()
-                .and().formLogin().and().csrf().disable();
+                .and()
+                .formLogin()
+                .loginPage("/signin")
+                .loginProcessingUrl("/dologin")
+                .defaultSuccessUrl("/user/index")
+                // .failureUrl("/login_fail")
+                .and().csrf().disable();
         http.authenticationProvider(this.daoAuthenticationProvider());
         return http.build();
     }
