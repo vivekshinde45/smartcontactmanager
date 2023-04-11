@@ -1,6 +1,7 @@
 package com.smartmanager.smartcontactmanager.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,9 @@ public class HomeController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder _passwordEncoder;
 
     @RequestMapping("/")
     public String home(Model model) {
@@ -60,11 +64,12 @@ public class HomeController {
 
             user.setRole("ROLE_USER");
             user.setActive(true);
+            user.setPassword(_passwordEncoder.encode(user.getPassword()));
 
-            // User _user = userRepository.save(user);
+            User _user = userRepository.save(user);
 
             System.out.println("Agreemant = " + agreement);
-            // System.out.println("USER => " + _user);
+            System.out.println("USER => " + _user);
 
             session.setAttribute("message", new Message("Successfully registered !!", "alert-success"));
             model.addAttribute("user", new User());
