@@ -74,3 +74,10 @@ body{
 .content{
     margin-left: 19%;
 }
+
+.my_profile_picture{
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    border-radius: 50%;
+}

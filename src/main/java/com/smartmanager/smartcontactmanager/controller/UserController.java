@@ -6,14 +6,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -77,6 +81,7 @@ public class UserController {
 
             if (file.isEmpty()) {
                 System.out.println("File not provided");
+                contact.setImageUrl("contact.png");
             } else {
                 String fileName = file.getOriginalFilename();
                 // save filename to DB
@@ -116,8 +121,8 @@ public class UserController {
         }
     }
 
-    @GetMapping("/show_contacts")
-    public String showContacts(Model model, Principal principal) {
+    @GetMapping("/show_contacts/{page}")
+    public String showContacts(@PathVariable("page") Integer page, Model model, Principal principal) {
         model.addAttribute("title", "Contacts");
 
         // get user
@@ -125,11 +130,24 @@ public class UserController {
         User user = this._userRepository.getUserByUserName(userName);
 
         // get contacts for specified user
-        List<Contact> contacts = this._contactRepository.getAllContactByUser(user.getId());
+        // create pagable for pagination of show contacts where it takes 2 ele
+        // 1:current_page and 2:#ofContacts/page
+        Pageable pageable = PageRequest.of(page, 5);
+        Page<Contact> contacts = this._contactRepository.getAllContactByUser(user.getId(), pageable);
 
         // map
         model.addAttribute("contacts", contacts);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", contacts.getTotalPages());
 
         return "normal/show_contacts";
+    }
+
+    @GetMapping("/contact/{id}")
+    public String contact(@PathVariable("id") int id, Model model) {
+        Optional<Contact> contactOptional = this._contactRepository.findById(id);
+        Contact contact = contactOptional.get();
+        model.addAttribute("contact", contact);
+        return "normal/contact_page";
     }
 }
