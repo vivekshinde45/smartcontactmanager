@@ -144,10 +144,53 @@ public class UserController {
     }
 
     @GetMapping("/contact/{id}")
-    public String contact(@PathVariable("id") int id, Model model) {
-        Optional<Contact> contactOptional = this._contactRepository.findById(id);
-        Contact contact = contactOptional.get();
-        model.addAttribute("contact", contact);
-        return "normal/contact_page";
+    public String contact(@PathVariable("id") int id, Model model, Principal principal) {
+        try {
+            Optional<Contact> contactOptional = this._contactRepository.findById(id);
+            Contact contact = contactOptional.get();
+
+            String userName = principal.getName();
+            User user = this._userRepository.getUserByUserName(userName);
+
+            if (user.getId() == contact.getUser().getId()) {
+                model.addAttribute("contact", contact);
+                model.addAttribute("title", contact.getName());
+            }
+            return "normal/contact_page";
+        } catch (Exception ex) {
+            return "normal/contact_page";
+        }
+    }
+
+    @GetMapping("/delete/{cId}")
+    public String deleteContact(@PathVariable("cId") int cId, Model model, Principal principal) {
+        try {
+            String userName = principal.getName();
+            User user = this._userRepository.getUserByUserName(userName);
+
+            Contact contact = this._contactRepository.findById(cId).get();
+
+            if (user.getId() == contact.getUser().getId()) {
+                // remove image from static/image folder
+                String imageName = contact.getImageUrl();
+                if (!imageName.equals("contact.png")) {
+                    // folder path
+                    File folderPath = new ClassPathResource("static/image").getFile();
+                    // make file path for delete
+                    Path filePath = Paths.get(folderPath.getAbsolutePath() + File.separator + imageName);
+                    // delete
+                    Files.delete(filePath);
+                }
+                // un-sync contact from user
+                contact.setUser(null);
+                // delete contact
+                this._contactRepository.delete(contact);
+            }
+
+        } catch (Exception e) {
+
+        }
+
+        return "redirect:/user/show_contacts/0";
     }
 }

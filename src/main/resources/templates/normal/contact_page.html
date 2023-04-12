@@ -8,7 +8,7 @@
 </head>
 <body>
     <section>
-        <div class="card">
+        <div class="card" th:if="${contact}">
             <div class="card-body">
                 <div class="container text-center">
                     <img style="height: 200px; width: 200px; border-radius: 50%;" src="" th:src="@{'/image/' + ${contact.imageUrl}}" alt="">
@@ -41,13 +41,14 @@
                       </div>
 
                       <div class="buttons">
-                        <button class="btn btn-danger btn-sm btn-block">Delete</button>
-                            <button class="btn btn-warning btn-sm btn-block">Update</button>
+                        <a th:href="@{'/user/delete/'+${contact.cId}}" class="btn btn-danger btn-sm btn-block">Delete</a>
+                        <button class="btn btn-warning btn-sm btn-block">Update</button>
                       </div>
                 </div>
                 
             </div>
         </div>
+        <h1 class="text-center p-3 bg-danger" th:unless="${contact}"> You dont have permission to see this contact</h1>
     </section>
 </body>
 </html>
