@@ -32,7 +32,12 @@
                                             <i class="fa fa-plus"></i>
                                         </div>
                                     </div>
-                                    <input class="form-control" type="text" id="fisrtName" name="name" placeholder="Enter Name Here">
+                                    <input class="form-control" 
+                                    type="text" 
+                                    id="fisrtName" 
+                                    name="name" 
+                                    placeholder="Enter Name Here"
+                                    required>
                                 </div>
 
                                 <!-- Second Name -->
@@ -42,7 +47,12 @@
                                             <i class="fa fa-user-alt"></i>
                                         </div>
                                     </div>
-                                    <input class="form-control" type="text" id="secondName" name="secondName" placeholder="Enter Second Name Here">
+                                    <input class="form-control" 
+                                    type="text" 
+                                    id="secondName" 
+                                    name="secondName" 
+                                    placeholder="Enter Second Name Here"
+                                    required>
                                 </div>
 
                                 <!-- Phone Number -->
@@ -52,7 +62,12 @@
                                             <i class="fa fa-phone"></i>
                                         </div>
                                     </div>
-                                    <input class="form-control" type="number" id="phone" name="phone" placeholder="Enter Phone Number Here">
+                                    <input class="form-control" 
+                                    type="number" 
+                                    id="phone" 
+                                    name="phone" 
+                                    placeholder="Enter Phone Number Here"
+                                    required>
                                 </div>
 
                                 <!-- Email-->
@@ -62,7 +77,12 @@
                                             @
                                         </div>
                                     </div>
-                                    <input class="form-control" type="email" id="email" name="email" placeholder="Enter Email Here">
+                                    <input class="form-control" 
+                                    type="email" 
+                                    id="email" 
+                                    name="email" 
+                                    placeholder="Enter Email Here"
+                                    required>
                                 </div>
 
                                 <!-- Work -->
@@ -72,12 +92,21 @@
                                             <i class="fa fa-briefcase"></i>
                                         </div>
                                     </div>
-                                    <input class="form-control" type="text" id="work" name="work" placeholder="Enter Work Here">
+                                    <input class="form-control" 
+                                    type="text" 
+                                    id="work" 
+                                    name="work" 
+                                    placeholder="Enter Work Here"
+                                    required>
                                 </div>
 
                                 <!-- Description Area -->
                                 <div class="form-group mt-3">
-                                    <textarea class="form-control" name="description" id="description" rows="7" placeholder="Enter Description Here "></textarea>
+                                    <textarea class="form-control" 
+                                    name="description" 
+                                    id="mytextarea" 
+                                    rows="7" 
+                                    placeholder="Enter Description Here "></textarea>
                                 </div>
 
                                 <!-- Image Field -->
@@ -96,6 +125,12 @@
                 </div>
             </div>
         </div>
+        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+        <script>
+            tinymce.init({
+              selector: '#mytextarea'
+            });
+          </script>
     </section>
 </body>
 </html>
