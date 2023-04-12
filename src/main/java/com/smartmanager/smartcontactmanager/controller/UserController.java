@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.smartmanager.smartcontactmanager.dao.ContactRepository;
 import com.smartmanager.smartcontactmanager.dao.UserRepository;
 import com.smartmanager.smartcontactmanager.entities.Contact;
 import com.smartmanager.smartcontactmanager.entities.User;
@@ -30,7 +32,10 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
 
     @Autowired
-    public UserRepository _userRepository;
+    private UserRepository _userRepository;
+
+    @Autowired
+    private ContactRepository _contactRepository;
 
     // add common data
     @ModelAttribute
@@ -109,5 +114,22 @@ public class UserController {
             session.setAttribute("message", new Message("Filed to update the contact try again", "danger"));
             return "normal/add_contact_form";
         }
+    }
+
+    @GetMapping("/show_contacts")
+    public String showContacts(Model model, Principal principal) {
+        model.addAttribute("title", "Contacts");
+
+        // get user
+        String userName = principal.getName();
+        User user = this._userRepository.getUserByUserName(userName);
+
+        // get contacts for specified user
+        List<Contact> contacts = this._contactRepository.getAllContactByUser(user.getId());
+
+        // map
+        model.addAttribute("contacts", contacts);
+
+        return "normal/show_contacts";
     }
 }
