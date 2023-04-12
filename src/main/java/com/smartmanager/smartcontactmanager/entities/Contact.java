@@ -112,4 +112,13 @@ public class Contact {
         this.user = user;
     }
 
+    // @Override
+    // public String toString() {
+    // return "Contact [cId=" + cId + ", name=" + name + ", secondName=" +
+    // secondName + ", email=" + email + ", work="
+    // + work + ", imageUrl=" + imageUrl + ", phone=" + phone + ", description=" +
+    // description + ", user="
+    // + user + "]";
+    // }
+
 }
